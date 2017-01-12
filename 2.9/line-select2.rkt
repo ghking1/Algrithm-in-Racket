@@ -67,7 +67,7 @@
     (if (< (- end start) 75)
         (begin (Q-sort vec start end) ;when vector length <75, use Q-sort find the k-th value
                (vector-ref vec k))
-        (begin (do ([i 0 (add1 i)]) ;find the middle value of the groups of five element, then put them to the start part of vector
+        (begin (do ([i 0 (add1 i)]) ;find the middle value of the groups of five element, then put them to the start part
                  ((> i (quotient (- end start 4) 5)) (void)) ; exit loop when i>quotient((end-start-4)/5)
                  (Q-sort vec (+ start (* i 5)) (+ start (* i 5) 4))
                  (let ([tmp (vector-ref vec (+ start (* i 5) 2))])
@@ -75,8 +75,8 @@
                    (vector-set! vec (+ start i) tmp)
                    )
                  )
-               (let* ([middle (line-select-inner start (+ start (quotient (- end start 4) 5)) (+ start (quotient (- end start 4) 10)))]
-                      [stop (partition vec start end middle)])
+               (let* ([middle (line-select-inner start (+ start (quotient (- end start 4) 5)) (+ start (quotient (- end start 4) 10)))] ;find the midlle value of middles of the groups of five element has been put to the start part
+                      [stop (partition vec start end middle)]) ;use the middle value of middles to partition the vector, stop is the stop position of partition
                  (cond
                    ([= k stop] (vector-ref vec stop)) ;value at stop is the value we want
                    {[< k stop] (line-select-inner start (sub1 stop) k)} ;find in left partition, value at stop is surely not the value you want
@@ -88,6 +88,7 @@
     )
   )
 
+;******************************************************test part**************************************************************
 (define v (vector 0 1 2 3 90 91 92 93 94 95 96 97 4 5 6 7 8 9 10 11
                   25 26 27 28 29 30 31 32 33 34 35 36 12 13 14 15 16
                   17 18 19 20 21 22 23 24 37 38 39 54 55 56 57 58 59 60
